@@ -1,6 +1,5 @@
 'use client'
 
-// import { container } from '@/app/di/containerConfig'
 import { Button } from '@/components/button'
 import EtfButton from '@/components/etf/etfButton'
 import { Heading, Subheading } from '@/components/heading'
