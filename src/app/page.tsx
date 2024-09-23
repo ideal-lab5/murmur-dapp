@@ -1,15 +1,16 @@
 'use client'
 
 import { Heading, Subheading } from '@/components/heading'
-import { IpfsService } from '@/services/IpfsService';
 import { container } from "tsyringe";
-import "reflect-metadata";
+import { IpfsService } from '@/services/IpfsService';
 import { Button } from '@headlessui/react';
-
+import { murmurClient } from './murmurClient';
+import "reflect-metadata";
 
 export default function Home() {
 
   const etfApi = container.resolve(IpfsService);
+  console.log("Service instance initialized", murmurClient);
 
   return (
     <>
