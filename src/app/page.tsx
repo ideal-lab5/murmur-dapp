@@ -2,8 +2,11 @@
 
 import { Heading, Subheading } from '@/components/heading'
 import "reflect-metadata";
+import { murmurClient } from './murmurClient';
 
 export default function Home() {
+
+  console.log("Service instance initialized", murmurClient);
 
   return (
     <>

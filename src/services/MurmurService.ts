@@ -1,5 +1,5 @@
 import { singleton } from "tsyringe";
-import { IMurmurService } from "./IMurmurService";
+import type { IMurmurService } from "./IMurmurService";
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import chainSpec from "../etf_spec/dev/etf_spec.json"
 import { Etf } from "@ideallabs/etf.js";
