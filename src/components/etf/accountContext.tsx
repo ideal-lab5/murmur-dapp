@@ -1,4 +1,3 @@
-// AccountContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { web3Enable, web3Accounts } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
