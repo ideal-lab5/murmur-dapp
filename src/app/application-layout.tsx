@@ -25,7 +25,6 @@ import { SidebarLayout } from '@/components/sidebar-layout'
 import { ChevronDownIcon, Cog8ToothIcon } from '@heroicons/react/16/solid'
 import { CubeIcon, QuestionMarkCircleIcon, RocketLaunchIcon, SparklesIcon } from '@heroicons/react/20/solid'
 import { usePathname } from 'next/navigation'
-import 'reflect-metadata'
 
 export const ApplicationLayout = ({ children }: { readonly children: React.ReactNode }) => {
   let pathname = usePathname()
