@@ -1,15 +1,10 @@
-import { IMasterService } from '@/services/IMasterService'
-import { IMurmurService } from '@/services/IMurmurService'
-import { MasterService } from '@/services/MasterService'
-import { MurmurService } from '@/services/MurmurService'
 import { useState } from 'react'
-import { container } from 'tsyringe'
+import { masterService, murmurClient as murmurService } from '../../app/murmurClient'
 import { useAccount } from './accountContext'
+import { Button } from '@/components/button'
 
 const EtfButton = () => {
   const { account, connectWallet } = useAccount()
-  const murmurService = container.resolve<IMurmurService>(MurmurService)
-  const masterService = container.resolve<IMasterService>(MasterService)
   const [request, setRequest] = useState<boolean>(false)
   const [messages, setMessages] = useState<string[]>([])
 
@@ -49,12 +44,12 @@ const EtfButton = () => {
   return (
     <>
       {!request ? (
-        <button
-          className="flex h-10 items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm transition-colors hover:border-transparent hover:bg-[#f2f2f2] sm:h-12 sm:min-w-44 sm:px-5 sm:text-base dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
+        <Button
+          color="sky"
           onClick={account ? handleButtonClick : connectWallet}
         >
-          {account ? 'get tokens' : 'connect wallet'}
-        </button>
+          {account ? 'Get tokens' : 'Connect wallet'}
+        </Button>
       ) : (
         <ul>
           {messages.map((msg, index) => (

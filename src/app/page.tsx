@@ -3,7 +3,6 @@
 import { Button } from '@/components/button'
 import EtfButton from '@/components/etf/etfButton'
 import { Heading, Subheading } from '@/components/heading'
-import 'reflect-metadata'
 import { ipfsClient, murmurClient } from './murmurClient'
 
 export default function Home() {
