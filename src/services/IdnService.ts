@@ -1,7 +1,7 @@
 import { Etf as Idn } from '@ideallabs/etf.js'
 import { cryptoWaitReady } from '@polkadot/util-crypto'
 import { singleton } from 'tsyringe'
-import chainSpec from '../etf_spec/dev/etf_spec.json'
+import chainSpec from '../chain_spec/dev/etf_spec.json'
 import type { IIdnService } from './IIdnService'
 
 @singleton()
