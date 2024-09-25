@@ -1,21 +1,21 @@
-import { Etf } from '@ideallabs/etf.js'
+import { Etf as Idn } from '@ideallabs/etf.js'
 import { cryptoWaitReady } from '@polkadot/util-crypto'
 import { singleton } from 'tsyringe'
 import chainSpec from '../etf_spec/dev/etf_spec.json'
-import type { IMurmurService } from './IMurmurService'
+import type { IIdnService } from './IIdnService'
 
 @singleton()
-export class MurmurService implements IMurmurService {
-  api!: Etf
+export class IdnService implements IIdnService {
+  api!: Idn
   node_dev: string = 'ws://127.0.0.1:9944'
 
   constructor() {
-    this.getEtfApi().then(() => {
-      console.log('ETF.js API is ready.')
+    this.getApi().then(() => {
+      console.log('API is ready.')
     })
   }
 
-  async getEtfApi(): Promise<Etf> {
+  async getApi(): Promise<Idn> {
     if (!this.api) {
       // ensure params are defined
       if (process.env.NEXT_PUBLIC_NODE_WS === undefined) {
@@ -25,8 +25,8 @@ export class MurmurService implements IMurmurService {
 
       try {
         await cryptoWaitReady()
-        let api = new Etf(process.env.NEXT_PUBLIC_NODE_WS, false)
-        console.log('Connecting to ETF chain')
+        let api = new Idn(process.env.NEXT_PUBLIC_NODE_WS, false)
+        console.log('Connecting to Ideal Network...')
         await api.init(JSON.stringify(chainSpec))
         this.api = api
       } catch (_e) {

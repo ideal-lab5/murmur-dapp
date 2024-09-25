@@ -1,17 +1,17 @@
 'use client'
 
 import { Button } from '@/components/button'
-import EtfButton from '@/components/etf/etfButton'
+import IdnButton from '@/components/idn/idnButton'
 import { Heading, Subheading } from '@/components/heading'
-import { ipfsClient, murmurClient } from './murmurClient'
+import { ipfsService, idnService } from './murmurClient'
 
 export default function Home() {
-  console.log(`Service instances murmur: ${murmurClient} and ipfs ${ipfsClient}`)
+  console.log(`Service instances murmur: ${idnService} and ipfs ${ipfsService}`)
 
   async function handleIpfsTest() {
-    const cid = await ipfsClient.writeObject({ hello: 'world' })
+    const cid = await ipfsService.writeObject({ hello: 'world' })
     console.log(`CID: ${cid}`)
-    const object = await ipfsClient.getObject(cid)
+    const object = await ipfsService.getObject(cid)
     console.log(`Object: ${object}`)
   }
 
@@ -23,7 +23,7 @@ export default function Home() {
         {' '}
         IPFS test
       </Button>
-      <EtfButton />
+      <IdnButton />
     </>
   )
 }

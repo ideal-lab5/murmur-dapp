@@ -8,8 +8,8 @@ import {
   DropdownLabel,
   DropdownMenu,
 } from '@/components/dropdown'
-import { AccountProvider } from '@/components/etf/accountContext'
-import { AccountDropdownMenu, ConnectWallet } from '@/components/etf/connectWallet'
+import { AccountProvider } from '@/components/idn/accountContext'
+import { AccountDropdownMenu, ConnectWallet } from '@/components/idn/connectWallet'
 import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '@/components/navbar'
 import {
   Sidebar,

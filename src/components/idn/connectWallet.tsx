@@ -1,7 +1,7 @@
 'use client'
 import { Avatar } from '@/components/avatar'
 import { Dropdown, DropdownButton, DropdownItem, DropdownLabel, DropdownMenu } from '@/components/dropdown'
-import { useAccount } from '@/components/etf/accountContext'
+import { useAccount } from '@/components/idn/accountContext'
 import { SidebarFooter, SidebarItem } from '@/components/sidebar'
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/20/solid'

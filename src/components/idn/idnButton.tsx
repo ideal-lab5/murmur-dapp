@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { masterService, murmurClient as murmurService } from '../../app/murmurClient'
+import { masterService, idnService } from '../../app/murmurClient'
 import { useAccount } from './accountContext'
 import { Button } from '@/components/button'
 
-const EtfButton = () => {
+const IdnButton = () => {
   const { account, connectWallet } = useAccount()
   const [request, setRequest] = useState<boolean>(false)
   const [messages, setMessages] = useState<string[]>([])
@@ -22,7 +22,7 @@ const EtfButton = () => {
       return
     }
 
-    const api = (await murmurService.getEtfApi()).api
+    const api = (await idnService.getApi()).api
 
     // Create a extrinsic, transferring 100 units to the user account
     const transfer = api.tx.balances.transferAllowDeath(account.address, 100_000_000_000_000)
@@ -61,4 +61,4 @@ const EtfButton = () => {
   )
 }
 
-export default EtfButton
+export default IdnButton
