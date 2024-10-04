@@ -12,10 +12,10 @@ import { container, delay, inject, injectable, registry } from 'tsyringe'
     token: 'MurmurServiceImplementation',
     useToken: delay(() => MurmurService),
   },
-  {
-    token: 'IpfsServiceImplementation',
-    useToken: delay(() => IpfsService),
-  },
+  // {
+  //   token: 'IpfsServiceImplementation',
+  //   useToken: delay(() => IpfsService),
+  // },
   {
     token: 'MasterServiceImplementation',
     useToken: delay(() => MasterService),
@@ -24,11 +24,11 @@ import { container, delay, inject, injectable, registry } from 'tsyringe'
 class MurmurClient {
   constructor(
     @inject('MurmurServiceImplementation') public murmurServiceInstance: IMurmurService,
-    @inject('IpfsServiceImplementation') public ipfsServiceInstance: IIpfsService,
+    // @inject('IpfsServiceImplementation') public ipfsServiceInstance: IIpfsService,
     @inject('MasterServiceImplementation') public masterServiceInstance: IMasterService,
   ) {}
 }
 
 export const murmurClient: IMurmurService = container.resolve(MurmurClient).murmurServiceInstance
-export const ipfsClient: IIpfsService = container.resolve(MurmurClient).ipfsServiceInstance
+// export const ipfsClient: IIpfsService = container.resolve(MurmurClient).ipfsServiceInstance
 export const masterService: IMasterService = container.resolve(MurmurClient).masterServiceInstance
