@@ -45,10 +45,9 @@ export default function Home() {
     murmurClient.new(100).then(result => {
       murmurClient.inspect(username).then((address) => {
         if (address) {
-          console.log('called inspect! ' + address)
           setAddress(address.address)
         } else {
-          console.log('well...no :)')
+          console.log(`no proxy found with name ${username}`)
         }
       })
     })
