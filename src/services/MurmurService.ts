@@ -1,22 +1,40 @@
-import { Etf } from '@ideallabs/etf.js'
-import { cryptoWaitReady } from '@polkadot/util-crypto'
 import { singleton } from 'tsyringe'
 import chainSpec from '../etf_spec/dev/etf_spec.json'
 import * as Sc from '@substrate/connect'
 import type { IMurmurService } from './IMurmurService'
-import { ApiPromise, ScProvider, WsProvider } from '@polkadot/api'
+import { ApiPromise, Keyring, ScProvider, WsProvider } from '@polkadot/api'
 import axios from "axios";
 import { MurmurClient } from "murmur.js";
 
-const NODE_DEV: string = 'ws://127.0.0.1:9944'
+const FALLBACK_NODE_WS = 'ws://127.0.0.1:9944'
+const FALLBACK_API_URL = 'http://127.0.0.1:8000'
 
 @singleton()
 export class MurmurService implements IMurmurService {
   public api!: ApiPromise
   client!: MurmurClient
+  wsUrl!: String
+  apiUrl!: String
 
   constructor() {
-    this.init(NODE_DEV).then(() => {
+
+    let apiUri = process.env.NEXT_PUBLIC_MURMUR_API
+    if (!apiUri) {
+      console.log("murmur api not specified, using local fallback");
+      apiUri = FALLBACK_API_URL
+    }
+
+    this.apiUrl = apiUri
+
+    let wsUri = process.env.NEXT_PUBLIC_NODE_WS
+    if (!wsUri) {
+      console.log("substrate node websocket not specified, using local fallback");
+      wsUri = FALLBACK_NODE_WS
+    }
+
+    this.wsUrl = wsUri
+
+    this.init(this.wsUrl as string).then(() => {
       console.log('ready.')
     })
   }
@@ -38,7 +56,7 @@ export class MurmurService implements IMurmurService {
     );
     // setup axios
     const httpClient = axios.create({
-      baseURL: "http://127.0.0.1:8000",
+      baseURL: this.apiUrl as string,
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -48,15 +66,19 @@ export class MurmurService implements IMurmurService {
     });
 
     // init murmur client (inject deps)
-    this.client = new MurmurClient(httpClient, this.api);
+    const keyring = new Keyring()
+    const alice = keyring.addFromUri('//Alice', { name: 'Alice' }, 'sr25519')
+    this.client = new MurmurClient(httpClient, this.api, alice);
     console.log("MurmurClient initialized");
 
     return Promise.resolve(this.client)
   }
 
-  async setupPolkadotJs(providerMultiAddr?: string,
+  async setupPolkadotJs(
+    providerMultiAddr?: string,
     chainSpec?: string,
-    extraTypes?: any): Promise<ApiPromise> {
+    extraTypes?: any
+  ): Promise<ApiPromise> {
     let provider
     if (providerMultiAddr == undefined) {
       let spec = JSON.stringify(chainSpec)
@@ -79,8 +101,7 @@ export class MurmurService implements IMurmurService {
     password: string,
   ): Promise<any> {
     let res = await this.client.authenticate(username, password)
-    console.log('res ' + res);
-    return Promise.resolve()
+    return Promise.resolve(res)
   }
 
   async new(validity: number): Promise<any> {
@@ -89,11 +110,17 @@ export class MurmurService implements IMurmurService {
   }
 
   async inspect(username: string): Promise<any> {
-    let result = await this.api.query.murmur.registry(username)
+    let name = new TextEncoder().encode(username);
+    let actualName = '';
+    name.forEach(byte => {
+      actualName += byte.toString()
+    })
+    let result = await this.api.query.murmur.registry(actualName)
     return Promise.resolve(result.toHuman())
   }
 
   async execute(callData: Uint8Array): Promise<any> {
+
     return Promise.resolve('')
   }
 }

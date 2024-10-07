@@ -28,4 +28,5 @@ export interface IMurmurService {
    * @returns A wallet address if one exists, else nothing
    */
   inspect: (username: string) => Promise<any>,
+
 }
