@@ -30,14 +30,12 @@ export default function Home() {
     murmurClient.authenticate(username, password).then(() => {
       setUsername(username)
       console.log("we assume the result is valid for now, so lets pretend you have a cookie containing the seed");
-
       // immediately inspect to see if a proxy already exists for the given username
       murmurClient.inspect(username).then((address) => {
         if (address) {
-          console.log('called inspect! ' + address)
           setAddress(address.address)
         } else {
-          console.log('nothing found...')
+          console.log(`no proxy found with name ${username}`)
         }
       })
     })

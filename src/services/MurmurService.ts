@@ -120,7 +120,6 @@ export class MurmurService implements IMurmurService {
   }
 
   async execute(callData: Uint8Array): Promise<any> {
-
     return Promise.resolve('')
   }
 }
