@@ -110,12 +110,7 @@ export class MurmurService implements IMurmurService {
   }
 
   async inspect(username: string): Promise<any> {
-    let name = new TextEncoder().encode(username);
-    let actualName = '';
-    name.forEach(byte => {
-      actualName += byte.toString()
-    })
-    let result = await this.api.query.murmur.registry(actualName)
+    let result = await this.api.query.murmur.registry(username)
     return Promise.resolve(result.toHuman())
   }
 
