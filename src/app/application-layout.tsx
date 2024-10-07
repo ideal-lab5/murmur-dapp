@@ -97,8 +97,6 @@ export const ApplicationLayout = ({ children }: { readonly children: React.React
                 </SidebarItem>
               </SidebarSection>
             </SidebarBody>
-
-            <ConnectWallet />
           </Sidebar>
         }
       >
