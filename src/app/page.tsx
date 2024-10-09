@@ -2,15 +2,19 @@
 
 import { Button } from '@/components/button'
 import { Heading } from '@/components/heading'
-import { murmurClient } from './murmurClient'
+import { masterService, murmurClient } from './murmurClient'
 import { useState } from 'react'
 import { Input } from '@/components/input'
+import { Extrinsic } from '../../../murmur.js/src/types'
 
 export default function Home() {
 
   const [username, setUsername] = useState('')
+  const [balance, setBalance] = useState(0)
+
   const [address, setAddress] = useState('')
-  const [message, setMessage] = useState('')
+  const [to, setTo] = useState('')
+  const [amount, setAmount] = useState(0)
 
   const handleAuth = async () => {
     const usernameElement = document.getElementById('username') as HTMLInputElement
@@ -27,34 +31,57 @@ export default function Home() {
     const password = passwordElement.value
     passwordElement.value = ''
 
-    murmurClient.authenticate(username, password).then(() => {
-      setUsername(username)
-      console.log("we assume the result is valid for now, so lets pretend you have a cookie containing the seed");
-      // immediately inspect to see if a proxy already exists for the given username
-      murmurClient.inspect(username).then((address) => {
-        if (address) {
-          setAddress(address.address)
-        } else {
-          console.log(`no proxy found with name ${username}`)
-        }
-      })
+    setUsername(username)
+    murmurClient.authenticate(username, password).then(async () => {
+      await handleInspect(username)
     })
   }
 
   const handleNew = async () => {
-    murmurClient.new(100).then(result => {
-      murmurClient.inspect(username).then((address) => {
-        if (address) {
-          setAddress(address.address)
-        } else {
-          console.log(`no proxy found with name ${username}`)
-        }
-      })
+    murmurClient.new(300, async (result) => {
+        await handleInspect(username)
+    });
+  }
+
+  const handleExecuteBalanceTransfer = async () => {
+    murmurClient.inspect(to).then(async account => {
+      console.log(amount)
+      if (account) {
+        let tx = murmurClient.getApi()
+          .tx
+          .balances
+          .transferKeepAlive(account.address, BigInt(amount));
+
+        await murmurClient.execute(tx as Extrinsic, async () => {
+          console.log('the tx was finalized')
+        })
+      } else {
+        console.log(`no proxy found with name ${username}`)
+      }
     })
   }
 
-  const handleSendRemark = async () => {
-    console.log("not yet implemented")
+  const handleInspect = async (username: any) => {
+    murmurClient.inspect(username).then((info) => {
+      if (info) {
+        setAddress(info.address)
+        console.log('balance ' + info.balance)
+        setBalance(info.balance)
+      } else {
+        console.log(`no proxy found with name ${username}`)
+        setUsername('')
+      }
+    })
+  }
+
+  const handleFaucet = async () => {
+    console.log('sending tokens to address ' + address)
+    await murmurClient.faucet(address, masterService.getMasterAccount(), async (result) => {
+      console.log(result)
+      if (result.status.isInBlock) {
+        await handleInspect(username)
+      }
+    })
   }
 
   return (
@@ -66,16 +93,23 @@ export default function Home() {
           <span>Hello {username}</span>
           {address !== '' ?
             <div className='grid gap-x-8 gap-y-6'>
-              <span>Address: {address}</span>
-              <span>Send a system remark</span>
-              <Input type='text' value={message} onChange={(e) => setMessage(e.target.value)} />
-              <Button onClick={handleSendRemark}>
-                Send Remark
+              <div className='grid'>
+                <span>Address: {address}</span>
+                <span>Balance: {balance}</span>
+                <Button onClick={handleFaucet}>
+                  Free Demo Faucet (1000 tokens)
+                </Button>
+              </div>
+              <span>Transfer Tokens</span>
+              <Input type='text' value={to} onChange={(e) => setTo(e.target.value)} />
+              <Input type='number' value={amount} onChange={(e) => setAmount(parseInt(e.target.value))} />
+              <Button onClick={handleExecuteBalanceTransfer}>
+                Submit
               </Button>
             </div>
             :
             <div>
-              <Button onClick={handleNew}>
+              <Button type="submit" onClick={handleNew}>
                 Create Wallet
               </Button>
             </div>
