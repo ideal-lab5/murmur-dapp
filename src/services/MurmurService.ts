@@ -6,6 +6,7 @@ import { ApiPromise, Keyring, ScProvider, WsProvider } from '@polkadot/api'
 import axios from "axios"
 import { MurmurClient } from "murmur.js"
 import { Extrinsic } from '../../../murmur.js/src/types'
+import { BN, formatBalance } from '@polkadot/util'
 
 const FALLBACK_NODE_WS = 'ws://127.0.0.1:9944'
 const FALLBACK_API_URL = 'http://127.0.0.1:8000'
@@ -112,12 +113,12 @@ export class MurmurService implements IMurmurService {
 
   async inspect(username: string): Promise<any> {
     let result: any = (await this.api.query.murmur.registry(username)).toHuman()
-    let address = '';
-    let balance: number = 0
+    let address = ''
+    let balance = ''
     if (result && result.address) {
       address = result.address
-      let accountData: any = (await this.api.query.system.account(result.address)).toHuman()
-      balance = accountData.data.free
+      let accountData: any = (await this.api.query.system.account(result.address))
+      balance = formatBalance(accountData.data.free, { withSiFull: true, decimals: 12 })
     }
     return Promise.resolve({ address, balance })
   }

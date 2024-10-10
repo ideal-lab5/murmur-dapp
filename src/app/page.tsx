@@ -6,11 +6,12 @@ import { masterService, murmurClient } from './murmurClient'
 import { useState } from 'react'
 import { Input } from '@/components/input'
 import { Extrinsic } from '../../../murmur.js/src/types'
+import { BN } from 'bn.js'
 
 export default function Home() {
 
   const [username, setUsername] = useState('')
-  const [balance, setBalance] = useState(0)
+  const [balance, setBalance] = useState('')
 
   const [address, setAddress] = useState('')
   const [to, setTo] = useState('')
@@ -39,21 +40,33 @@ export default function Home() {
 
   const handleNew = async () => {
     murmurClient.new(300, async (result) => {
+      if (result.status.isInBlock) {
         await handleInspect(username)
+      }
     });
   }
 
   const handleExecuteBalanceTransfer = async () => {
     murmurClient.inspect(to).then(async account => {
-      console.log(amount)
+      // console.log(amount)
+      let balance = new BN(amount * Math.pow(10, 12));
       if (account) {
         let tx = murmurClient.getApi()
           .tx
           .balances
-          .transferKeepAlive(account.address, BigInt(amount));
+          .transferKeepAlive(account.address, balance);
 
-        await murmurClient.execute(tx as Extrinsic, async () => {
-          console.log('the tx was finalized')
+        await murmurClient.execute(tx as Extrinsic, async (result) => {
+          if (result.status.isInBlock) {
+            console.log(
+              `Transaction included at blockHash ${result.status.asInBlock}`
+            )
+            await handleInspect(username)
+          } else if (result.status.isFinalized) {
+            console.log(
+              `Transaction finalized at blockHash ${result.status.asFinalized}`
+            )
+          }
         })
       } else {
         console.log(`no proxy found with name ${username}`)
@@ -65,7 +78,6 @@ export default function Home() {
     murmurClient.inspect(username).then((info) => {
       if (info) {
         setAddress(info.address)
-        console.log('balance ' + info.balance)
         setBalance(info.balance)
       } else {
         console.log(`no proxy found with name ${username}`)
@@ -97,12 +109,12 @@ export default function Home() {
                 <span>Address: {address}</span>
                 <span>Balance: {balance}</span>
                 <Button onClick={handleFaucet}>
-                  Free Demo Faucet (1000 tokens)
+                  Free Demo Faucet (500 tokens)
                 </Button>
               </div>
               <span>Transfer Tokens</span>
               <Input type='text' value={to} onChange={(e) => setTo(e.target.value)} />
-              <Input type='number' value={amount} onChange={(e) => setAmount(parseInt(e.target.value))} />
+              <Input type='number' step='any' value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
               <Button onClick={handleExecuteBalanceTransfer}>
                 Submit
               </Button>
