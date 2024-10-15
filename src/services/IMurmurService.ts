@@ -1,6 +1,6 @@
 import { ApiPromise } from '@polkadot/api'
-import { MurmurClient } from 'murmur.js'
-import { Extrinsic } from '../../../murmur.js/src/types';
+import { MurmurClient } from '@ideallabs/murmur.js'
+import { Call } from '@ideallabs/murmur.js/src/types';
 
 export interface IMurmurService {
 
@@ -33,7 +33,7 @@ export interface IMurmurService {
    */
   inspect: (username: string) => Promise<any>
 
-  execute: (extrinsic: Extrinsic, callback: (result: any) => Promise<void>) => Promise<any>
+  execute: (call: Call, callback: (result: any) => Promise<void>) => Promise<any>
 
   faucet: (recipientAddress: any, signer: any, callback: (result: any) => Promise<void>) => Promise<any>
 
