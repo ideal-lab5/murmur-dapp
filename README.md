@@ -1,15 +1,31 @@
-# Ideal Labs Murmur DApp
+# Ideal Labs Murmur Wallet DApp
 
-To run the app, first install the npm dependencies:
+A web UI to interact with the Murmur Wallet.
+
+## Installation
+
+To install the necessary npm dependencies, run the following command in your project directory:
 
 ```bash
 npm install
 ```
 
-Next, run the development server:
+## Running the Development Server
+
+To start the development server, use the following command:
 
 ```bash
 npm run dev
 ```
 
-Finally, open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
+The development server will start, and you can view the website by opening [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Building for Production
+
+To build the application for production, run:
+
+```bash
+npm run build
+```
+
+This will create an optimized build of your application in the `out` directory.
