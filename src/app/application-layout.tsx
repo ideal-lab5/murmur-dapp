@@ -8,8 +8,6 @@ import {
   DropdownLabel,
   DropdownMenu,
 } from '@/components/dropdown'
-import { AccountProvider } from '@/components/etf/accountContext'
-import { AccountDropdownMenu, ConnectWallet } from '@/components/etf/connectWallet'
 import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '@/components/navbar'
 import {
   Sidebar,
@@ -30,7 +28,6 @@ export const ApplicationLayout = ({ children }: { readonly children: React.React
   let pathname = usePathname()
 
   return (
-    <AccountProvider>
       <SidebarLayout
         navbar={
           <Navbar>
@@ -40,9 +37,6 @@ export const ApplicationLayout = ({ children }: { readonly children: React.React
                 <DropdownButton as={NavbarItem}>
                   <Avatar src="/users/erica.jpg" square />
                 </DropdownButton>
-                <AccountDropdownMenu anchor="bottom end" onDisconnect={function (): void {
-                  throw new Error('Function not implemented.')
-                } } />
               </Dropdown>
             </NavbarSection>
           </Navbar>
@@ -102,6 +96,5 @@ export const ApplicationLayout = ({ children }: { readonly children: React.React
       >
         {children}
       </SidebarLayout>
-    </AccountProvider>
   )
 }
