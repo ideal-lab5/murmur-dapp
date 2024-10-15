@@ -55,8 +55,6 @@ export default function Home() {
           if (result.status.isInBlock) {
             console.log(`Transaction included at blockHash ${result.status.asInBlock}`)
             await handleInspect(username)
-          } else if (result.status.isFinalized) {
-            console.log(`Transaction finalized at blockHash ${result.status.asFinalized}`)
           }
         })
       } else {
