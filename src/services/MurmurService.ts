@@ -3,8 +3,10 @@ import chainSpec from '../etf_spec/dev/etf_spec.json'
 import * as Sc from '@substrate/connect'
 import type { IMurmurService } from './IMurmurService'
 import { ApiPromise, Keyring, ScProvider, WsProvider } from '@polkadot/api'
-import axios from "axios";
-import { MurmurClient } from "murmur.js";
+import axios from "axios"
+import { MurmurClient } from "murmur.js"
+import { Extrinsic } from '../../../murmur.js/src/types'
+import { BN, formatBalance } from '@polkadot/util'
 
 const FALLBACK_NODE_WS = 'ws://127.0.0.1:9944'
 const FALLBACK_API_URL = 'http://127.0.0.1:8000'
@@ -20,7 +22,7 @@ export class MurmurService implements IMurmurService {
 
     let apiUri = process.env.NEXT_PUBLIC_MURMUR_API
     if (!apiUri) {
-      console.log("murmur api not specified, using local fallback");
+      console.log("murmur api not specified, using local fallback")
       apiUri = FALLBACK_API_URL
     }
 
@@ -28,7 +30,7 @@ export class MurmurService implements IMurmurService {
 
     let wsUri = process.env.NEXT_PUBLIC_NODE_WS
     if (!wsUri) {
-      console.log("substrate node websocket not specified, using local fallback");
+      console.log("substrate node websocket not specified, using local fallback")
       wsUri = FALLBACK_NODE_WS
     }
 
@@ -53,7 +55,7 @@ export class MurmurService implements IMurmurService {
       providerMultiAddr,
       chainSpec,
       extraTypes,
-    );
+    )
     // setup axios
     const httpClient = axios.create({
       baseURL: this.apiUrl as string,
@@ -63,13 +65,13 @@ export class MurmurService implements IMurmurService {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "Content-Type, Set-Cookie",
       },
-    });
+    })
 
     // init murmur client (inject deps)
     const keyring = new Keyring()
     const alice = keyring.addFromUri('//Alice', { name: 'Alice' }, 'sr25519')
-    this.client = new MurmurClient(httpClient, this.api, alice);
-    console.log("MurmurClient initialized");
+    this.client = new MurmurClient(httpClient, this.api, alice)
+    console.log("MurmurClient initialized")
 
     return Promise.resolve(this.client)
   }
@@ -104,17 +106,38 @@ export class MurmurService implements IMurmurService {
     return Promise.resolve(res)
   }
 
-  async new(validity: number): Promise<any> {
-    let res = await this.client.new(validity)
+  async new(validity: number, callback: (result: any) => Promise<void>): Promise<any> {
+    let res = await this.client.new(validity, callback)
     return Promise.resolve(res)
   }
 
   async inspect(username: string): Promise<any> {
-    let result = await this.api.query.murmur.registry(username)
-    return Promise.resolve(result.toHuman())
+    let result: any = (await this.api.query.murmur.registry(username)).toHuman()
+    let address = ''
+    let balance = ''
+    if (result && result.address) {
+      address = result.address
+      let accountData: any = (await this.api.query.system.account(result.address))
+      balance = formatBalance(accountData.data.free, { withSiFull: true, decimals: 12 })
+    }
+    return Promise.resolve({ address, balance })
   }
 
-  async execute(callData: Uint8Array): Promise<any> {
+  async execute(extrinsic: Extrinsic, callback: (result: any) => Promise<void>): Promise<any> {
+    await this.client.execute(extrinsic, callback)
     return Promise.resolve('')
   }
+
+  async faucet(
+    recipientAddress: any,
+    signer: any,
+    callback: (status: any) => Promise<void> = async () => { }
+  ): Promise<any> {
+    let tx = await this.api.tx.balances.transferAllowDeath(recipientAddress, BigInt(500_000_000_000_000));
+    tx.signAndSend(signer, async (result: any) => {
+      callback(result)
+    })
+    return Promise.resolve()
+  }
+
 }

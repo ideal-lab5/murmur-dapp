@@ -1,6 +1,10 @@
+import { ApiPromise } from '@polkadot/api'
 import { MurmurClient } from 'murmur.js'
+import { Extrinsic } from '../../../murmur.js/src/types';
 
 export interface IMurmurService {
+
+  getApi(): ApiPromise;
 
   /**
    * Initialize the MurmurService
@@ -20,13 +24,17 @@ export interface IMurmurService {
    * Create a new murmur wallet
    * @returns ()
    */
-  new: (validity: number) => Promise<any>
+  new: (validity: number, callback: (result: any) => Promise<void>) => Promise<any>
 
   /**
    * Inspect a username to fetch murmur wallet details
    * @param username: The username to identify a wallet
    * @returns A wallet address if one exists, else nothing
    */
-  inspect: (username: string) => Promise<any>,
+  inspect: (username: string) => Promise<any>
+
+  execute: (extrinsic: Extrinsic, callback: (result: any) => Promise<void>) => Promise<any>
+
+  faucet: (recipientAddress: any, signer: any, callback: (result: any) => Promise<void>) => Promise<any>
 
 }
