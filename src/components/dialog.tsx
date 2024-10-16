@@ -4,11 +4,11 @@ import type React from 'react'
 import { Text } from './text'
 
 const sizes = {
-  xs: 'sm:max-w-xs',
-  sm: 'sm:max-w-sm',
-  md: 'sm:max-w-md',
-  lg: 'sm:max-w-lg',
-  xl: 'sm:max-w-xl',
+  'xs': 'sm:max-w-xs',
+  'sm': 'sm:max-w-sm',
+  'md': 'sm:max-w-md',
+  'lg': 'sm:max-w-lg',
+  'xl': 'sm:max-w-xl',
   '2xl': 'sm:max-w-2xl',
   '3xl': 'sm:max-w-3xl',
   '4xl': 'sm:max-w-4xl',
@@ -22,10 +22,11 @@ export function Dialog({
   className,
   children,
   ...props
-}: { size?: keyof typeof sizes; className?: string; children: React.ReactNode } & Omit<
-  Headless.DialogProps,
-  'className'
->) {
+}: {
+  size?: keyof typeof sizes
+  className?: string
+  children: React.ReactNode
+} & Omit<Headless.DialogProps, 'className'>) {
   return (
     <Headless.Transition appear show={open} {...props}>
       <Headless.Dialog onClose={onClose}>
@@ -74,7 +75,10 @@ export function DialogTitle({
   return (
     <Headless.DialogTitle
       {...props}
-      className={clsx(className, 'text-balance text-lg/6 font-semibold text-zinc-950 sm:text-base/6 dark:text-white')}
+      className={clsx(
+        className,
+        'text-balance text-lg/6 font-semibold text-zinc-950 sm:text-base/6 dark:text-white'
+      )}
     />
   )
 }
@@ -82,15 +86,30 @@ export function DialogTitle({
 export function DialogDescription({
   className,
   ...props
-}: { className?: string } & Omit<Headless.DescriptionProps<typeof Text>, 'className'>) {
-  return <Headless.Description as={Text} {...props} className={clsx(className, 'mt-2 text-pretty')} />
+}: { className?: string } & Omit<
+  Headless.DescriptionProps<typeof Text>,
+  'className'
+>) {
+  return (
+    <Headless.Description
+      as={Text}
+      {...props}
+      className={clsx(className, 'mt-2 text-pretty')}
+    />
+  )
 }
 
-export function DialogBody({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
+export function DialogBody({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'div'>) {
   return <div {...props} className={clsx(className, 'mt-6')} />
 }
 
-export function DialogActions({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
+export function DialogActions({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'div'>) {
   return (
     <div
       {...props}

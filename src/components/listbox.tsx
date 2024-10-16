@@ -9,14 +9,14 @@ export function Listbox<T>({
   placeholder,
   autoFocus,
   'aria-label': ariaLabel,
-  children: options,
+  'children': options,
   ...props
 }: {
-  className?: string
-  placeholder?: React.ReactNode
-  autoFocus?: boolean
+  'className'?: string
+  'placeholder'?: React.ReactNode
+  'autoFocus'?: boolean
   'aria-label'?: string
-  children?: React.ReactNode
+  'children'?: React.ReactNode
 } & Omit<Headless.ListboxProps<typeof Fragment, T>, 'multiple'>) {
   return (
     <Headless.Listbox {...props} multiple={false}>
@@ -43,7 +43,13 @@ export function Listbox<T>({
         <Headless.ListboxSelectedOption
           as="span"
           options={options}
-          placeholder={placeholder && <span className="block truncate text-zinc-500">{placeholder}</span>}
+          placeholder={
+            placeholder && (
+              <span className="block truncate text-zinc-500">
+                {placeholder}
+              </span>
+            )
+          }
           className={clsx([
             // Basic layout
             'relative block w-full appearance-none rounded-lg py-[calc(theme(spacing[2.5])-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]',
@@ -70,8 +76,18 @@ export function Listbox<T>({
             aria-hidden="true"
             fill="none"
           >
-            <path d="M5.75 10.75L8 13L10.25 10.75" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M10.25 5.25L8 3L5.75 5.25" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M5.75 10.75L8 13L10.25 10.75"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M10.25 5.25L8 3L5.75 5.25"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </span>
       </Headless.ListboxButton>
@@ -108,7 +124,10 @@ export function ListboxOption<T>({
   children,
   className,
   ...props
-}: { className?: string; children?: React.ReactNode } & Omit<Headless.ListboxOptionProps<'div', T>, 'className'>) {
+}: { className?: string; children?: React.ReactNode } & Omit<
+  Headless.ListboxOptionProps<'div', T>,
+  'className'
+>) {
   const sharedClasses = clsx(
     // Base
     'flex min-w-0 items-center',
@@ -124,7 +143,9 @@ export function ListboxOption<T>({
     <Headless.ListboxOption as={Fragment} {...props}>
       {({ selectedOption }) => {
         if (selectedOption) {
-          return <div className={clsx(className, sharedClasses)}>{children}</div>
+          return (
+            <div className={clsx(className, sharedClasses)}>{children}</div>
+          )
         }
 
         return (
@@ -148,9 +169,16 @@ export function ListboxOption<T>({
               fill="none"
               aria-hidden="true"
             >
-              <path d="M4 8.5l3 3L12 4" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M4 8.5l3 3L12 4"
+                strokeWidth={1.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
-            <span className={clsx(className, sharedClasses, 'col-start-2')}>{children}</span>
+            <span className={clsx(className, sharedClasses, 'col-start-2')}>
+              {children}
+            </span>
           </div>
         )
       }}
@@ -158,11 +186,26 @@ export function ListboxOption<T>({
   )
 }
 
-export function ListboxLabel({ className, ...props }: React.ComponentPropsWithoutRef<'span'>) {
-  return <span {...props} className={clsx(className, 'ml-2.5 truncate first:ml-0 sm:ml-2 sm:first:ml-0')} />
+export function ListboxLabel({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'span'>) {
+  return (
+    <span
+      {...props}
+      className={clsx(
+        className,
+        'ml-2.5 truncate first:ml-0 sm:ml-2 sm:first:ml-0'
+      )}
+    />
+  )
 }
 
-export function ListboxDescription({ className, children, ...props }: React.ComponentPropsWithoutRef<'span'>) {
+export function ListboxDescription({
+  className,
+  children,
+  ...props
+}: React.ComponentPropsWithoutRef<'span'>) {
   return (
     <span
       {...props}

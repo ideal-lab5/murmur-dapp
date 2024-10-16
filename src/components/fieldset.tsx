@@ -2,16 +2,25 @@ import * as Headless from '@headlessui/react'
 import clsx from 'clsx'
 import type React from 'react'
 
-export function Fieldset({ className, ...props }: { className?: string } & Omit<Headless.FieldsetProps, 'className'>) {
+export function Fieldset({
+  className,
+  ...props
+}: { className?: string } & Omit<Headless.FieldsetProps, 'className'>) {
   return (
     <Headless.Fieldset
       {...props}
-      className={clsx(className, '[&>*+[data-slot=control]]:mt-6 [&>[data-slot=text]]:mt-1')}
+      className={clsx(
+        className,
+        '[&>*+[data-slot=control]]:mt-6 [&>[data-slot=text]]:mt-1'
+      )}
     />
   )
 }
 
-export function Legend({ className, ...props }: { className?: string } & Omit<Headless.LegendProps, 'className'>) {
+export function Legend({
+  className,
+  ...props
+}: { className?: string } & Omit<Headless.LegendProps, 'className'>) {
   return (
     <Headless.Legend
       data-slot="legend"
@@ -24,11 +33,23 @@ export function Legend({ className, ...props }: { className?: string } & Omit<He
   )
 }
 
-export function FieldGroup({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
-  return <div data-slot="control" {...props} className={clsx(className, 'space-y-8')} />
+export function FieldGroup({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'div'>) {
+  return (
+    <div
+      data-slot="control"
+      {...props}
+      className={clsx(className, 'space-y-8')}
+    />
+  )
 }
 
-export function Field({ className, ...props }: { className?: string } & Omit<Headless.FieldProps, 'className'>) {
+export function Field({
+  className,
+  ...props
+}: { className?: string } & Omit<Headless.FieldProps, 'className'>) {
   return (
     <Headless.Field
       {...props}
@@ -45,7 +66,10 @@ export function Field({ className, ...props }: { className?: string } & Omit<Hea
   )
 }
 
-export function Label({ className, ...props }: { className?: string } & Omit<Headless.LabelProps, 'className'>) {
+export function Label({
+  className,
+  ...props
+}: { className?: string } & Omit<Headless.LabelProps, 'className'>) {
   return (
     <Headless.Label
       data-slot="label"
@@ -82,7 +106,10 @@ export function ErrorMessage({
     <Headless.Description
       data-slot="error"
       {...props}
-      className={clsx(className, 'text-base/6 text-red-600 data-[disabled]:opacity-50 sm:text-sm/6 dark:text-red-500')}
+      className={clsx(
+        className,
+        'text-base/6 text-red-600 data-[disabled]:opacity-50 sm:text-sm/6 dark:text-red-500'
+      )}
     />
   )
 }

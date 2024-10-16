@@ -28,7 +28,9 @@ export class MurmurService implements IMurmurService {
 
     let wsUri = process.env.NEXT_PUBLIC_NODE_WS
     if (!wsUri) {
-      console.log('substrate node websocket not specified, using local fallback')
+      console.log(
+        'substrate node websocket not specified, using local fallback'
+      )
       wsUri = FALLBACK_NODE_WS
     }
 
@@ -43,9 +45,17 @@ export class MurmurService implements IMurmurService {
     return this.api
   }
 
-  async init(providerMultiAddr?: string, chainSpec?: string, extraTypes?: any): Promise<MurmurClient> {
+  async init(
+    providerMultiAddr?: string,
+    chainSpec?: string,
+    extraTypes?: any
+  ): Promise<MurmurClient> {
     // setup polkadotjs
-    this.api = await this.setupPolkadotJs(providerMultiAddr, chainSpec, extraTypes)
+    this.api = await this.setupPolkadotJs(
+      providerMultiAddr,
+      chainSpec,
+      extraTypes
+    )
     // setup axios
     const httpClient = axios.create({
       baseURL: this.apiUrl as string,
@@ -66,7 +76,11 @@ export class MurmurService implements IMurmurService {
     return Promise.resolve(this.client)
   }
 
-  async setupPolkadotJs(providerMultiAddr?: string, chainSpec?: string, extraTypes?: any): Promise<ApiPromise> {
+  async setupPolkadotJs(
+    providerMultiAddr?: string,
+    chainSpec?: string,
+    extraTypes?: any
+  ): Promise<ApiPromise> {
     let provider
     if (providerMultiAddr == undefined) {
       let spec = JSON.stringify(chainSpec)
@@ -89,7 +103,10 @@ export class MurmurService implements IMurmurService {
     return Promise.resolve(res)
   }
 
-  async new(validity: number, callback: (result: any) => Promise<void>): Promise<any> {
+  async new(
+    validity: number,
+    callback: (result: any) => Promise<void>
+  ): Promise<any> {
     let res = await this.client.new(validity, callback)
     return Promise.resolve(res)
   }
@@ -101,12 +118,18 @@ export class MurmurService implements IMurmurService {
     if (result && result.address) {
       address = result.address
       let accountData: any = await this.api.query.system.account(result.address)
-      balance = formatBalance(accountData.data.free, { withSiFull: true, decimals: 12 })
+      balance = formatBalance(accountData.data.free, {
+        withSiFull: true,
+        decimals: 12,
+      })
     }
     return Promise.resolve({ address, balance })
   }
 
-  async execute(call: Call, callback: (result: any) => Promise<void>): Promise<any> {
+  async execute(
+    call: Call,
+    callback: (result: any) => Promise<void>
+  ): Promise<any> {
     await this.client.execute(call, callback)
     return Promise.resolve('')
   }
@@ -116,7 +139,10 @@ export class MurmurService implements IMurmurService {
     signer: any,
     callback: (status: any) => Promise<void> = async () => {}
   ): Promise<any> {
-    let tx = await this.api.tx.balances.transferAllowDeath(recipientAddress, BigInt(500_000_000_000_000))
+    let tx = await this.api.tx.balances.transferAllowDeath(
+      recipientAddress,
+      BigInt(500_000_000_000_000)
+    )
     tx.signAndSend(signer, async (result: any) => {
       callback(result)
     })

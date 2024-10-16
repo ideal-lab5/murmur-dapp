@@ -36,7 +36,11 @@ const colors = {
 
 type BadgeProps = { color?: keyof typeof colors }
 
-export function Badge({ color = 'zinc', className, ...props }: BadgeProps & React.ComponentPropsWithoutRef<'span'>) {
+export function Badge({
+  color = 'zinc',
+  className,
+  ...props
+}: BadgeProps & React.ComponentPropsWithoutRef<'span'>) {
   return (
     <span
       {...props}
@@ -67,7 +71,11 @@ export const BadgeButton = React.forwardRef(function BadgeButton(
   )
 
   return 'href' in props ? (
-    <Link {...props} className={classes} ref={ref as React.ForwardedRef<HTMLAnchorElement>}>
+    <Link
+      {...props}
+      className={classes}
+      ref={ref as React.ForwardedRef<HTMLAnchorElement>}
+    >
       <TouchTarget>
         <Badge color={color}>{children}</Badge>
       </TouchTarget>
