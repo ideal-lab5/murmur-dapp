@@ -4,11 +4,11 @@ import type React from 'react'
 import { Text } from './text'
 
 const sizes = {
-  xs: 'sm:max-w-xs',
-  sm: 'sm:max-w-sm',
-  md: 'sm:max-w-md',
-  lg: 'sm:max-w-lg',
-  xl: 'sm:max-w-xl',
+  'xs': 'sm:max-w-xs',
+  'sm': 'sm:max-w-sm',
+  'md': 'sm:max-w-md',
+  'lg': 'sm:max-w-lg',
+  'xl': 'sm:max-w-xl',
   '2xl': 'sm:max-w-2xl',
   '3xl': 'sm:max-w-3xl',
   '4xl': 'sm:max-w-4xl',
@@ -22,10 +22,11 @@ export function Alert({
   className,
   children,
   ...props
-}: { size?: keyof typeof sizes; className?: string; children: React.ReactNode } & Omit<
-  Headless.DialogProps,
-  'className'
->) {
+}: {
+  size?: keyof typeof sizes
+  className?: string
+  children: React.ReactNode
+} & Omit<Headless.DialogProps, 'className'>) {
   return (
     <Headless.Transition appear show={open} {...props}>
       <Headless.Dialog onClose={onClose}>
@@ -85,7 +86,10 @@ export function AlertTitle({
 export function AlertDescription({
   className,
   ...props
-}: { className?: string } & Omit<Headless.DescriptionProps<typeof Text>, 'className'>) {
+}: { className?: string } & Omit<
+  Headless.DescriptionProps<typeof Text>,
+  'className'
+>) {
   return (
     <Headless.Description
       as={Text}
@@ -95,11 +99,17 @@ export function AlertDescription({
   )
 }
 
-export function AlertBody({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
+export function AlertBody({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'div'>) {
   return <div {...props} className={clsx(className, 'mt-4')} />
 }
 
-export function AlertActions({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
+export function AlertActions({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'div'>) {
   return (
     <div
       {...props}

@@ -1,4 +1,4 @@
-import "reflect-metadata";
+import 'reflect-metadata'
 import '@/styles/tailwind.css'
 import type { Metadata } from 'next'
 import type React from 'react'
@@ -12,8 +12,11 @@ export const metadata: Metadata = {
   description: '',
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html
       lang="en"
@@ -24,9 +27,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
       </head>
       <body>
-        <ApplicationLayout>
-          {children}
-        </ApplicationLayout>
+        <ApplicationLayout>{children}</ApplicationLayout>
       </body>
     </html>
   )

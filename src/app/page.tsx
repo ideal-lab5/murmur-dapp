@@ -17,8 +17,12 @@ export default function Home() {
   const [amount, setAmount] = useState(0)
 
   const handleAuth = async () => {
-    const usernameElement = document.getElementById('username') as HTMLInputElement
-    const passwordElement = document.getElementById('password') as HTMLInputElement
+    const usernameElement = document.getElementById(
+      'username'
+    ) as HTMLInputElement
+    const passwordElement = document.getElementById(
+      'password'
+    ) as HTMLInputElement
 
     if (usernameElement.value === null || passwordElement.value === null) {
       console.error('username and password fields must be defined')
@@ -49,11 +53,15 @@ export default function Home() {
     murmurClient.inspect(to).then(async (account) => {
       let balance = new BN(amount * Math.pow(10, 12))
       if (account && account.address.length > 0) {
-        let tx = murmurClient.getApi().tx.balances.transferKeepAlive(account.address, balance)
+        let tx = murmurClient
+          .getApi()
+          .tx.balances.transferKeepAlive(account.address, balance)
 
         await murmurClient.execute(tx as Call, async (result) => {
           if (result.status.isInBlock) {
-            console.log(`Transaction included at blockHash ${result.status.asInBlock}`)
+            console.log(
+              `Transaction included at blockHash ${result.status.asInBlock}`
+            )
             await handleInspect(username)
           }
         })
@@ -77,12 +85,16 @@ export default function Home() {
 
   const handleFaucet = async () => {
     console.log('sending tokens to address ' + address)
-    await murmurClient.faucet(address, masterService.getMasterAccount(), async (result) => {
-      console.log(result)
-      if (result.status.isInBlock) {
-        await handleInspect(username)
+    await murmurClient.faucet(
+      address,
+      masterService.getMasterAccount(),
+      async (result) => {
+        console.log(result)
+        if (result.status.isInBlock) {
+          await handleInspect(username)
+        }
       }
-    })
+    )
   }
 
   return (
@@ -97,11 +109,22 @@ export default function Home() {
               <div className="grid">
                 <span>Address: {address}</span>
                 <span>Balance: {balance}</span>
-                <Button onClick={handleFaucet}>Free Demo Faucet (500 tokens)</Button>
+                <Button onClick={handleFaucet}>
+                  Free Demo Faucet (500 tokens)
+                </Button>
               </div>
               <span>Transfer Tokens</span>
-              <Input type="text" value={to} onChange={(e) => setTo(e.target.value)} />
-              <Input type="number" step="any" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
+              <Input
+                type="text"
+                value={to}
+                onChange={(e) => setTo(e.target.value)}
+              />
+              <Input
+                type="number"
+                step="any"
+                value={amount}
+                onChange={(e) => setAmount(parseFloat(e.target.value))}
+              />
               <Button onClick={handleExecuteBalanceTransfer}>Submit</Button>
             </div>
           ) : (

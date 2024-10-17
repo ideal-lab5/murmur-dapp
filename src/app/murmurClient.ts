@@ -17,10 +17,14 @@ import { container, delay, inject, injectable, registry } from 'tsyringe'
 ])
 class MurmurClient {
   constructor(
-    @inject('MurmurServiceImplementation') public murmurServiceInstance: IMurmurService,
-    @inject('MasterServiceImplementation') public masterServiceInstance: IMasterService,
+    @inject('MurmurServiceImplementation')
+    public murmurServiceInstance: IMurmurService,
+    @inject('MasterServiceImplementation')
+    public masterServiceInstance: IMasterService
   ) {}
 }
 
-export const murmurClient: IMurmurService = container.resolve(MurmurClient).murmurServiceInstance
-export const masterService: IMasterService = container.resolve(MurmurClient).masterServiceInstance
+export const murmurClient: IMurmurService =
+  container.resolve(MurmurClient).murmurServiceInstance
+export const masterService: IMasterService =
+  container.resolve(MurmurClient).masterServiceInstance
