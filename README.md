@@ -4,6 +4,9 @@ A web UI to interact with the Murmur Wallet.
 
 ## Environment Variables
 
+You need to have your `.env` file set up regardless of whether you are running the application
+natively or with Docker.
+
 Copy `.env.example` to `.env`. If necessary, modify the values in the `.env` file.
 
 ```bash
