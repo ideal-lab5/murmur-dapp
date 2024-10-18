@@ -28,6 +28,9 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules ./node_modules
 
+# Set NODE_ENV to production
+ENV NODE_ENV=production
+
 # Install only production dependencies
 RUN npm install --only=production
 

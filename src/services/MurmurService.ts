@@ -7,9 +7,6 @@ import axios from 'axios'
 import { singleton } from 'tsyringe'
 import type { IMurmurService } from './IMurmurService'
 
-const FALLBACK_NODE_WS = 'ws://127.0.0.1:9944'
-const FALLBACK_API_URL = 'http://127.0.0.1:8000'
-
 @singleton()
 export class MurmurService implements IMurmurService {
   public api!: ApiPromise
@@ -20,18 +17,14 @@ export class MurmurService implements IMurmurService {
   constructor() {
     let apiUri = process.env.NEXT_PUBLIC_MURMUR_API
     if (!apiUri) {
-      console.log('murmur api not specified, using local fallback')
-      apiUri = FALLBACK_API_URL
+      throw new Error('Murmur API not specified')
     }
 
     this.apiUrl = apiUri
 
     let wsUri = process.env.NEXT_PUBLIC_NODE_WS
     if (!wsUri) {
-      console.log(
-        'substrate node websocket not specified, using local fallback'
-      )
-      wsUri = FALLBACK_NODE_WS
+      throw new Error('Substrate node websocket not specified')
     }
 
     this.wsUrl = wsUri
