@@ -8,7 +8,7 @@ import { container, delay, inject, injectable, registry } from 'tsyringe'
 @registry([
   {
     token: 'MurmurServiceImplementation',
-    useToken: delay(() => MurmurService),
+    useToken: MurmurService,
   },
   {
     token: 'MasterServiceImplementation',

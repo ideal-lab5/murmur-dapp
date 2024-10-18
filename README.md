@@ -2,6 +2,14 @@
 
 A web UI to interact with the Murmur Wallet.
 
+## Environment Variables
+
+Copy `.env.example` to `.env`. If necessary, modify the values in the `.env` file.
+
+```bash
+cp .env.example .env
+```
+
 ## Running Natively
 
 To run this project natively, follow these steps:
